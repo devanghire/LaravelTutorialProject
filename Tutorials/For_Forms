@@ -1,0 +1,32 @@
+<?php 
+
+/**** FOR FORM SUBMIT AND INSERT DATA ******/
+
+View : - 
+
+// <form id="registerForm" action="{{ route('adduser') }}" method="post">
+//    @csrf <!-- MUST PASS  (@ csrf) WHEN FORM SUBMIT  -->
+// </form>
+
+
+Controller : -
+   public function view()
+    {
+        $data['title'] = 'User Form';
+        $data['userData']  = DB::table("users")->get();
+        return view('dashboard', $data);
+    }
+   public function add(Request $postData){
+
+      $first_name = $postData->post('firstname');
+      $insertData = array('first_name'=>$first_name,);
+      $insertData = DB::table('users')->insertOrIgnore($insertData);
+      return redirect()->route('userslist');
+   }
+
+Routes : -
+
+   Route::controller(Dashboard::class)->group(function () {
+      Route::get('', 'view')->name('userslist');
+      Route::post('add', 'add')->name('adduser');
+   });

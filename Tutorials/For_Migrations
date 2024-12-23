@@ -1,0 +1,93 @@
+What is migrations ?
+
+   ** Migration mean to create table in database in laravel.
+      to create the migrations (table) Type below command
+   
+   ** in it create_ and _table is fixed words to create migrations
+      AND tbluser is main table name
+
+      php artisan make:migration create_tbluser_table
+      php artisan make:migration create_tblcompany_table
+
+
+   ** after that migration file is created. this file keep the blueprint of create table query.
+      to crteate table in database run below command 
+
+      php artisan migrate
+
+   ** that mean your migration file is run and tables is created in local  
+
+
+
+   ** to empty all tables and reset databse
+
+      php artisan migrate:refresh
+
+   ***************************************************
+   
+   ** //*** to add new column city in existing table
+
+      php artisan make:migrate update_laraveluser_table --table=laraveluser
+      
+   ** after that new file will created in migration folder then you will add the column 
+      in this file like this: - 
+
+      public function up(): void
+      {
+        Schema::table('laraveluser', function (Blueprint $table) {
+            $table->string('city',30);
+            $table->int('mobile',10)->default(9998334669)->comment('mobile number of users')->change();
+        });
+      }
+   ** after that you will run again the same command like
+
+       php artisan migrate
+   ** so it will add new column in table    
+
+********************************************************************
+
+** to rename column of existing table
+
+      public function up(): void
+      {
+        Schema::table('laraveluser', function (Blueprint $table) {
+            $table->string('city',30);
+            $table->renameColumn('city','cityname');
+        });
+      }
+** to drop column of existing table
+
+      public function up(): void
+      {
+        Schema::table('laraveluser', function (Blueprint $table) {
+            
+            $table->dropColumn('cityname');
+        });
+      }
+** to change size column of existing table
+
+      public function up(): void
+      {
+        Schema::table('laraveluser', function (Blueprint $table) {
+            
+            $table->string('cityname',50)->change();
+        });
+      }
+
+
+*************************************************************************************
+
+** to rename table you can create new schema in up() function and add rename code in it like
+         (( YOU CAN CREATE NEW MIGRATE FILE OR ADD SCHEMA IN SAME FILE IN up() function  ))
+      
+      
+      public function up(): void
+      {
+        Schema::remane('laraveluser',laraveluserssss);
+
+        //if you want to drop table 
+        Schema::dropIfExists('laraveluserssss');
+
+            
+      }
+

@@ -1,0 +1,72 @@
+<?php 
+
+// ***************** HOW TO CREATE NEW CONTEOLLER AND DECLAIR AND USE IT ***************
+
+   // Stap 1 : CREATE CONTEOLLER : - php artisan make:controller HomeController
+
+
+
+   //Stap 2 : CREATE ROUTE FOR THAT :
+
+      //top of web.php route file include controller first like
+      //goto routes folder and create this type of group for routes of all functions of controller
+
+      // * home = url
+      // * home_firstFunction = class name
+      // * ->name('first') = name of route (its optional)
+      // * you can pass param in url like ( /homethree/{id})
+
+      //use App\Http\Controllers\HomeController
+      //use Illuminate\Support\Facades\DB; //FOR SQL QUERYS
+
+      Route::controller(HomeController::class)->group(function(){
+
+         Route::get('/home','home_firstFunction')->name('first');
+         Route::get('/hometwo','home_secondFunction')->name('second');
+         Route::get('/homethree/{id}','home_theirdFunction')->name('theird');
+
+      });
+
+
+      //stap 3 : in controller
+
+
+      class HomeController extends Controller
+      {
+         public function home_firstFunction(){
+            return view('home_first');
+         }
+         public function home_secondFunction()
+         {
+            return view('home_second');
+         }
+         public function home_theirdFunction(string $name)
+         {
+            return view('home_theird',compact('name'));
+         }
+      }
+
+
+
+
+//************* WHAT IS SINGLE ACTION CONTROLLER *******************
+
+   // ANS : - a controller have only one function and that is work like index function
+
+   // Stap 1 : CREATE CONTEOLLER : - php artisan make:controller SingleAction i
+
+
+   // its look like
+
+   use App\Http\Controllers\SingleAction;
+   //route : - Route::get('/invoke','SingleAction:class');
+
+
+   class SingleAction extends Controller
+   {
+      public function __invoke(){
+         return "Hello";
+      }
+   }
+   
+   ?>

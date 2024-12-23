@@ -1,0 +1,71 @@
+<?php 
+
+
+// ****** QUERYS IN LARAVEL SYNTEXT *******
+
+
+// When you create controller you have to include the one file for database use
+
+use illuminate\Support\Facades\DB;
+
+
+// **** TO USE GET / INSERT / UPDATE / DELETE QUERY ******
+
+
+		$userData = DB::table('tbluser')->get();//for all data
+		$userData = DB::table('tbluser')->toSql();//for print last query
+		$userData = DB::table('tbluser')->select('id','name')->get();//for selected data
+		$userData = DB::table('tbluser')->where('id','=',1)->get();//for all data
+		$userData = DB::table('tbluser')->where('name','like','%dev%')->get();//for all data
+
+		// INSERT DATA
+		$insertArray = array('name' => "devang",'age' => '30');
+		$userData = DB::table('tbluser')->insert($insertArray);
+
+		// UPDATE DATA
+		$userData = DB::table('tbluser')->where('id',1)->update(["name"=>"hire"]);
+		
+		// DELETE DATA
+		$userData = DB::table('tbluser')->where('id',1)->delete();
+	 
+
+	
+// ______ if we want if condition to get data like CODIGNITER ____
+
+	// in codeigniter :- 
+	
+		$this->db->select ('*');
+		$this->db->from('users');
+		if(!empty($id)){
+			$this->db->where('id',$id);
+		}
+		$this->db->get()->result_array();
+
+	// in laravel : -
+
+		$flag =(!empty($id))?true:false;$id=1;
+		$data = DB::tabel('users')->select('*')->when($flag,function($query) use ($id){
+							$query->where('id','=',$id);
+				})->get();
+		// ==== OR ====		
+		$data = DB::table('users')->select('*')->when($flag, function ($query) use ($id, $status) {
+					 $query->where('id', '=', $id)
+							 ->where('status', '=', $status);
+				})->get();		
+
+
+
+
+// *********** FOR RAW QUERY IN LARAVEL ****************
+
+// FOR SELECT
+$userData = DB::select("select * from users where id = :id and name = :name",['id'=>1,'name'=>"devang"]);
+
+// FOR UPDATE
+$userData = DB::update("update users set email = 'devang.hire@gmail.com' where id = ?",[1]);
+
+
+	
+
+
+

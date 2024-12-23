@@ -1,0 +1,22 @@
+CLEAR CACHE IN LARAVEL : - 
+
+
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan event:clear
+
+After clearing the caches, you can rebuild the config or route cache by running: -
+
+php artisan config:cache
+php artisan route:cache
+
+
+
+
+
+
+
+
+
