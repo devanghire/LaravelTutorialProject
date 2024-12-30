@@ -45,12 +45,12 @@ Route::get('/wel', function () {
 //     return view('welcome');
 // })->whereNumber('id'); //that mean accept only numaric value as param
 
-Route::controller(HomeController::class)->group(function () {
+// Route::controller(HomeController::class)->group(function () {
 
-    Route::get('/home', 'home_firstFunction')->name('first');
-    Route::any('/hometwo', 'home_secondFunction')->name('hometwo');
-    Route::get('/homethree/{name}', 'home_theirdFunction')->name('theird');
-});
+//     Route::get('/home', 'home_firstFunction')->name('first');
+//     Route::any('/hometwo', 'home_secondFunction')->name('hometwo');
+//     Route::get('/homethree/{name}', 'home_theirdFunction')->name('theird');
+// });
 
 Route::controller(Dashboard::class)->group(function () {
 

@@ -1,0 +1,121 @@
+Model Event is use when any event fire that mean if we insert any user in table 
+then create event will fired so that time model event fire autometically
+
+USE : - if any user register then admin will get email automatically by useing model event
+
+
+# Types of events: - 
+
+# Creating :== before recoard  has been created
+# Created :== after recoard has been created
+
+# saving : = before recoard has been saved
+# saved : = after recoard has been saved
+
+# updating:== before recoard has been updated
+# updated :== after recoard has been updated
+
+# deleting:== before recoard has been deleted
+# deleted :== after recoard has been deleted
+
+
+example : -  we have 2 tables one is user table and another is post table.
+             user table have user data and post table have multiple posts which created by user.
+             so when i delete user from user table then 
+             all posts of the same user will also delete from posts table AUTOMETICALLY
+
+
+
+STEP 1 : - #create resource controller users and posts like this   
+
+            php:artisan make:controller UserController --resource
+            php:artisan make:controller PostController  --resource
+
+            # route: = 
+
+            Route::resource('user',UserController::class)
+            Route::resource('post',PostController::class)
+
+             # controller
+            
+             namespace App\Http\Controllers;
+             use Illuminate\Http\Request;
+             use App\Models\User
+ 
+             class UserController extends Controller
+             {
+               
+                public function index()
+                {
+                   $userData = User::with('post')->find(1);
+                   return $userData;
+                }
+             }
+
+
+#******************************************************************************************
+STEP 2 : - #create model users and posts like this 
+             
+               php:artisan make:model User
+               php:artisan make:model Post
+           
+            # and join the user model to post model like this 
+
+            # model 
+            namespace App\Models;
+
+            use Illuminate\Database\Eloquent\Factories\HasFactory;
+            use Illuminate\Database\Eloquent\Model;
+
+            class users extends Model
+            {
+               use HasFactory;
+
+               public function post(){
+                  return $this->hasMany(Post::class) # $this means user Tabel and Post mean post table
+               }
+            }
+
+#******************************************************************************************
+STEP 3 : -  #  When i want to delete any user data with his post also then 
+            #  protected static function booted() called autometically
+            #  when data deleted from user table (it find deleted event and call autometic) 
+
+
+            # controller
+            
+            namespace App\Http\Controllers;
+            use Illuminate\Http\Request;
+            use App\Models\User
+
+            class UserController extends Controller
+            {
+              
+               public function create()
+               {
+                  $userData = User::find(1)->delete(); #id1 user data deleted from user table
+                  
+               }
+            }
+
+             # model 
+             namespace App\Models;
+
+             use Illuminate\Database\Eloquent\Factories\HasFactory;
+             use Illuminate\Database\Eloquent\Model;
+ 
+             class users extends Model
+             {
+                use HasFactory;
+ 
+               #  public function post(){
+               #     return $this->hasMany(Post::class) # $this means user Tabel and Post mean post table
+               #  }
+
+                protected static function booted():void{
+                  static:deleted(function($userFlag){ # deleted is event
+                     $userFlag->post()->delete();
+                  })
+                }
+             }
+             
