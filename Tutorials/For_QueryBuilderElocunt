@@ -1,0 +1,62 @@
+
+# Here is a concise list of commonly used Eloquent methods in Laravel 10,
+# along with their syntax and brief explanations:
+
+
+# Retrieve all records:
+   $records = Model::all();
+
+# Find a record by primary key:
+   $record = Model::find(1);
+
+#  Find a record by primary key or throw an exception:
+   $record = Model::findOrFail(1);
+
+# Simple get data with where:
+   $records = Model::where('status', 'active')->get();
+
+   <!-- Only first recoard -->
+   $record = Model::where('status', 'active')->first();
+
+   <!-- if not get data then throw exeption -->
+   $record = Model::where('status', 'active')->firstOrFail();
+
+   <!-- Retrieve a single column's values -->
+   $names = Model::pluck('name');
+
+   <!-- Order results: -->
+   $records = Model::orderBy('name', 'desc')->get();
+
+
+
+
+<!-- ****************************** INSERT QUERIES ****************************** -->
+
+#  Insert a new record (requires fillable or guarded in the model):
+   $record = Model::create(['name' => 'John Doe','email' => 'john@example.com']);
+
+   <!-- Insert multiple records: -->
+   Model::insert([
+      ['name' => 'John', 'email' => 'john@example.com'],
+      ['name' => 'Jane', 'email' => 'jane@example.com']
+   ]);
+
+<!-- ****************************** UPDATE QUERIES ****************************** -->
+
+#  Update matching records:
+   Model::where('status', 'active')->update(['status' => 'inactive']);
+
+    <!-- Save the current model instance: -->
+   $record = Model::find(1);
+   $record->name = 'Updated Name';
+   $record->save();
+
+<!-- ****************************** DELETE QUERIES ****************************** -->
+
+#  Update matching records:
+   
+   $record = Model::find(1);
+   $record->delete();
+
+   <!-- delete multile ids -->
+   Model::destroy([1, 2, 3]);
